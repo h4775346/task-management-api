@@ -36,7 +36,13 @@ class DependencyStoreRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            // Get the task ID from the route parameter (could be Task object or ID)
             $taskId = $this->route('task');
+            if ($taskId instanceof Task) {
+                $taskId = $taskId->id;
+            }
+            
+            // Get the dependency task ID from input
             $dependsOnTaskId = $this->input('depends_on_task_id');
 
             // Reject self-dependency
@@ -44,9 +50,14 @@ class DependencyStoreRequest extends FormRequest
                 $validator->errors()->add('depends_on_task_id', 'A task cannot depend on itself.');
             }
 
-            // Check for cycles (simplified version - in a real app, you'd implement a more robust cycle detection)
+            // Check if dependency already exists
             /** @var Task|null $task */
             $task = Task::query()->find($taskId);
+            if ($task && $task->dependencies()->where('depends_on_task_id', $dependsOnTaskId)->exists()) {
+                $validator->errors()->add('depends_on_task_id', 'This dependency already exists.');
+            }
+
+            // Check for cycles (simplified version - in a real app, you'd implement a more robust cycle detection)
             /** @var Task|null $dependsOnTask */
             $dependsOnTask = Task::query()->find($dependsOnTaskId);
 

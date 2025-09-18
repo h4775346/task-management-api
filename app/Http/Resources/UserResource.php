@@ -9,6 +9,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property \Illuminate\Database\Eloquent\Collection $roles
+ * @property \Illuminate\Database\Eloquent\Collection $permissions
  */
 class UserResource extends JsonResource
 {
@@ -22,7 +24,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
+            'email' => $this->email
         ];
     }
 }

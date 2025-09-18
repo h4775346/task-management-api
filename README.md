@@ -164,10 +164,10 @@ curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
 ### 🔐 Authentication
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/auth/login` | Login and get JWT token |
+| `POST` | `/api/auth/login` | Login and get JWT token with user details and permissions |
 | `POST` | `/api/auth/refresh` | Refresh JWT token |
 | `POST` | `/api/auth/logout` | Logout and invalidate token |
-| `GET` | `/api/auth/me` | Get current user info |
+| `GET` | `/api/auth/me` | Get current user info with roles and permissions |
 
 ### 📋 Tasks
 | Method | Endpoint | Description |
@@ -274,7 +274,7 @@ Explore our comprehensive documentation:
 
 For a visual representation of the database structure, see our [Entity Relationship Diagram](docs/erd.md) or view it directly below:
 
-```mermaid
+```
 erDiagram
     USERS {
         int id PK

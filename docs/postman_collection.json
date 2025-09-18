@@ -28,7 +28,7 @@
               "host": ["{{base_url}}"],
               "path": ["auth", "login"]
             },
-            "description": "Authenticate a user and return JWT tokens. Use the returned access_token for subsequent requests."
+            "description": "Authenticate a user and return JWT tokens with user details. Use the returned access_token for subsequent requests."
           },
           "response": [
             {
@@ -59,7 +59,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 3600,\n  \"refresh_expires_in\": 2592000\n}",
+              "body": "{\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 3600,\n  \"refresh_expires_in\": 2592000,\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Manager User\",\n    \"email\": \"manager@example.com\",\n    \"roles\": [\n      {\n        \"id\": 1,\n        \"name\": \"manager\",\n        \"permissions\": [\n          \"view tasks\",\n          \"create tasks\",\n          \"update tasks\",\n          \"delete tasks\",\n          \"assign tasks\",\n          \"update task status\"\n        ]\n      }\n    ],\n    \"permissions\": [\n      \"view tasks\",\n      \"create tasks\",\n      \"update tasks\",\n      \"delete tasks\",\n      \"assign tasks\",\n      \"update task status\"\n    ]\n  },\n  \"roles\": [\n    \"manager\"\n  ],\n  \"permissions\": [\n    \"view tasks\",\n    \"create tasks\",\n    \"update tasks\",\n    \"delete tasks\",\n    \"assign tasks\",\n    \"update task status\"\n  ]\n}",
               "_postman_previewlanguage": "json"
             },
             {
@@ -209,7 +209,7 @@
               "host": ["{{base_url}}"],
               "path": ["auth", "me"]
             },
-            "description": "Get the authenticated user's information."
+            "description": "Get the authenticated user's information with roles and permissions."
           },
           "response": [
             {
@@ -237,7 +237,7 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": 1,\n  \"name\": \"Manager User\",\n  \"email\": \"manager@example.com\"\n}",
+              "body": "{\n  \"id\": 1,\n  \"name\": \"Manager User\",\n  \"email\": \"manager@example.com\",\n  \"roles\": [\n    {\n      \"id\": 1,\n      \"name\": \"manager\",\n      \"permissions\": [\n        \"view tasks\",\n        \"create tasks\",\n        \"update tasks\",\n        \"delete tasks\",\n        \"assign tasks\",\n        \"update task status\"\n      ]\n    }\n  ],\n  \"permissions\": [\n    \"view tasks\",\n    \"create tasks\",\n    \"update tasks\",\n    \"delete tasks\",\n    \"assign tasks\",\n    \"update task status\"\n  ]\n}",
               "_postman_previewlanguage": "json"
             }
           ]

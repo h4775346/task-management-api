@@ -36,7 +36,7 @@ class IssueDemoToken extends Command
             return 1;
         }
 
-        $token = app('tymon.jwt.auth')->fromUser($user);
+        $token = auth()->fromUser($user);
 
         $this->info("Access token for {$user->email}:");
         $this->line($token);

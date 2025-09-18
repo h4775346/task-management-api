@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
 {
     /**
-     * Authenticate a user and return a JWT token.
+     * Authenticate a user and return a JWT token with user details.
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -19,18 +19,27 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         try {
-            if (! $token = app('tymon.jwt.auth')->attempt($credentials)) {
+            if (! $token = auth()->attempt($credentials)) {
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
 
+        // Get the authenticated user with their roles and permissions
+        /** @var User $user */
+        $user = auth()->user();
+
+        // Get all permissions for the user (direct and via roles)
+        $permissions = $user->getAllPermissions()->pluck('name');
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => app('tymon.jwt.auth')->factory()->getTTL() * 60,
+            'expires_in' => auth()->factory()->getTTL() * 60,
             'refresh_expires_in' => config('jwt.refresh_ttl') * 60,
+            'user' => new UserResource($user),
+            'permissions' => $permissions,
         ]);
     }
 
@@ -42,7 +51,7 @@ class AuthController extends Controller
     public function refresh()
     {
         try {
-            $token = app('tymon.jwt.auth')->parseToken()->refresh();
+            $token = auth()->parseToken()->refresh();
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not refresh token'], 401);
         }
@@ -50,7 +59,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => app('tymon.jwt.auth')->factory()->getTTL() * 60,
+            'expires_in' => auth()->factory()->getTTL() * 60,
             'refresh_expires_in' => config('jwt.refresh_ttl') * 60,
         ]);
     }
@@ -63,7 +72,7 @@ class AuthController extends Controller
     public function logout()
     {
         try {
-            app('tymon.jwt.auth')->invalidate(app('tymon.jwt.auth')->getToken());
+           auth()->logout();
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not invalidate token'], 500);
         }
@@ -74,16 +83,15 @@ class AuthController extends Controller
     /**
      * Get the authenticated user.
      *
-     * @return \Illuminate\Http\JsonResponse|UserResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
         /** @var User $user */
-        $user = auth('api')->user();
-
-        // Load roles for the user
-        $user->load('roles');
-
-        return new UserResource($user);
+        $user = auth()->user();
+        return response()->json([
+            'user' => new UserResource($user),
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+        ]);
     }
 }
