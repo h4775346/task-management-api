@@ -1,61 +1,223 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A REST API for task management with JWT authentication, RBAC, task dependencies with cycle detection, and caching.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Authentication**: JWT-based authentication using `tymon/jwt-auth`
+- **Authorization**: Role-Based Access Control using `spatie/laravel-permission`
+- **Task Management**: Create, read, update, delete tasks with soft deletes
+- **Task Dependencies**: Add dependencies between tasks with cycle detection
+- **Search & Filtering**: Advanced search with caching
+- **Docker**: Production-ready Docker setup with nginx, PHP-FPM, and MySQL
+- **Testing**: Comprehensive test suite using PestPHP
+- **Documentation**: OpenAPI 3.1 specification, Postman collection, and ERD
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Composer
+- Docker & Docker Compose
+- Node.js (for frontend assets)
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Framework**: Laravel 11
+- **Authentication**: tymon/jwt-auth
+- **RBAC**: spatie/laravel-permission
+- **Database**: MySQL 8.x
+- **Caching**: Laravel FILE cache (no Redis)
+- **Testing**: PestPHP
+- **QA**: Laravel Pint, Larastan
+- **Documentation**: OpenAPI 3.1, Postman
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Quick Start
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Start the Docker environment**:
+   ```bash
+   make up
+   ```
 
-## Laravel Sponsors
+2. **Run migrations and seeders**:
+   ```bash
+   make migrate-seed
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Login with demo credentials**:
+   ```bash
+   # Manager account
+   email: manager@example.com
+   password: password
+   
+   # User accounts
+   email: user1@example.com
+   password: password
+   
+   email: user2@example.com
+   password: password
+   ```
 
-### Premium Partners
+4. **Generate a JWT token for testing**:
+   ```bash
+   php artisan auth:demo-token manager@example.com
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. **Test the API**:
+   ```bash
+   curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+        http://localhost:8000/api/tasks/search \
+        -X POST \
+        -d '{"status":"pending","page":1,"per_page":10}' \
+        -H "Content-Type: application/json"
+   ```
 
-## Contributing
+## Docker Setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The project includes a complete Docker environment with:
 
-## Code of Conduct
+- **app**: PHP 8.2 FPM container
+- **web**: Nginx web server
+- **db**: MySQL 8.x database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Make Commands
 
-## Security Vulnerabilities
+- `make up` - Start all services
+- `make down` - Stop all services
+- `make logs` - View container logs
+- `make migrate-seed` - Run migrations and seeders
+- `make test` - Run test suite
+- `make stan` - Run static analysis
+- `make lint` - Check code style
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## API Endpoints
+
+### Authentication
+
+- `POST /api/auth/login` - Login and get JWT token
+- `POST /api/auth/refresh` - Refresh JWT token
+- `POST /api/auth/logout` - Logout and invalidate token
+- `GET /api/auth/me` - Get current user info
+
+### Tasks
+
+- `POST /api/tasks` - Create a new task (manager only)
+- `GET /api/tasks/{id}` - Get a specific task
+- `PUT /api/tasks/{id}` - Update a task (manager only)
+- `PATCH /api/tasks/{id}/status` - Update task status (assignee or manager)
+- `DELETE /api/tasks/{id}` - Delete a task (manager only)
+
+### Task Dependencies
+
+- `GET /api/tasks/{id}/dependencies` - Get task dependencies
+- `POST /api/tasks/{id}/dependencies` - Add a dependency (manager only)
+- `DELETE /api/tasks/{id}/dependencies/{dependsOnId}` - Remove a dependency (manager only)
+
+### Task Search
+
+- `POST /api/tasks/search` - Search and filter tasks with pagination
+
+## Roles & Permissions
+
+### Manager Role
+
+- Can create, update, and delete tasks
+- Can assign tasks to users
+- Can view all tasks
+- Can update status of any task
+
+### User Role
+
+- Can view only assigned tasks
+- Can update status of assigned tasks only
+
+## Caching
+
+The task search endpoint uses Laravel FILE cache with versioned keys. Cache is automatically invalidated when:
+
+- Tasks are created, updated, or deleted
+- Task dependencies are added or removed
+
+**Note**: FILE cache is safe for single-container deployments. For multi-instance deployments, use Redis or disable caching.
+
+## Testing
+
+Run the test suite with:
+
+```bash
+make test
+```
+
+Or directly:
+
+```bash
+./vendor/bin/pest
+```
+
+## Code Quality
+
+### Static Analysis
+
+Run PHPStan for static analysis:
+
+```bash
+make stan
+```
+
+Or directly:
+
+```bash
+./vendor/bin/phpstan analyse
+```
+
+### Code Style
+
+Check code style with Laravel Pint:
+
+```bash
+make lint
+```
+
+Or directly:
+
+```bash
+./vendor/bin/pint --test
+```
+
+Fix code style issues:
+
+```bash
+./vendor/bin/pint
+```
+
+## Documentation
+
+- **OpenAPI 3.1**: See `docs/openapi.yaml`
+- **Postman Collection**: See `docs/postman_collection.json`
+- **ERD**: See `docs/erd.md`
+
+## Environment Variables
+
+Key environment variables (see `.env.example` for full list):
+
+- `DB_CONNECTION` - Database connection (mysql)
+- `DB_HOST` - Database host (db)
+- `DB_PORT` - Database port (3306)
+- `DB_DATABASE` - Database name (tasks)
+- `DB_USERNAME` - Database user (tasks)
+- `DB_PASSWORD` - Database password (tasks)
+- `CACHE_DRIVER` - Cache driver (file)
+- `JWT_TTL` - JWT token TTL in seconds (900 = 15 minutes)
+- `JWT_REFRESH_TTL` - JWT refresh token TTL in minutes (43200 = 30 days)
+- `TASKS_SEARCH_CACHE_TTL` - Task search cache TTL in seconds (60)
+
+## Deployment Considerations
+
+1. **Caching**: For multi-instance deployments, replace FILE cache with Redis
+2. **Database**: Use a production-ready MySQL instance
+3. **Security**: Never commit `.env` files to version control
+4. **Performance**: Enable PHP opcache and nginx gzip compression
+5. **Scaling**: Use a load balancer for multiple app instances
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License. See [LICENSE](LICENSE) file for details.
