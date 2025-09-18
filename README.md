@@ -40,10 +40,6 @@ Whether you're building a project management application, workflow automation sy
 
 ## 📋 Requirements
 
-### For Docker Development (Recommended)
-- Docker & Docker Compose
-- Git
-
 ### For Local Development
 - PHP 8.2+
 - Composer
@@ -51,29 +47,11 @@ Whether you're building a project management application, workflow automation sy
 - Node.js (for frontend assets)
 - Git
 
+### For Docker Development (Recommended)
+- Docker & Docker Compose
+- Git
+
 ## 📦 Installation
-
-### 🐳 Docker Setup (Recommended)
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/h4775346/task-management-api.git
-   cd task-management-api
-   ```
-
-2. **Start the Docker Environment**
-   ```bash
-   make up
-   ```
-
-3. **Run Migrations and Seeders**
-   ```bash
-   make migrate-seed
-   ```
-
-4. **Access the Application**
-   - API: `http://localhost:8000/api`
-   - Database: `localhost:3306` (MySQL)
 
 ### 💻 Local Development Setup
 
@@ -97,6 +75,7 @@ Whether you're building a project management application, workflow automation sy
    ```bash
    cp .env.example .env
    php artisan key:generate
+   php artisan jwt:secret
    ```
    
    Update your `.env` file with your database credentials:
@@ -121,6 +100,28 @@ Whether you're building a project management application, workflow automation sy
    
    The API will be available at `http://localhost:8000/api`
 
+### 🐳 Docker Setup (Recommended)
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/h4775346/task-management-api.git
+   cd task-management-api
+   ```
+
+2. **Start the Docker Environment**
+   ```bash
+   make up
+   ```
+
+3. **Run Migrations and Seeders**
+   ```bash
+   make migrate-seed
+   ```
+
+4. **Access the Application**
+   - API: `http://localhost:8000/api`
+   - Database: `localhost:3306` (MySQL)
+
 ## 🎯 Quick Start Guide
 
 ### 1. **Login with Demo Credentials**
@@ -144,13 +145,13 @@ Password: password
 
 ### 2. **Generate a JWT Token**
 
-```bash
+```
 php artisan auth:demo-token manager@example.com
 ```
 
 ### 3. **Test the API**
 
-```bash
+```
 curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
      http://localhost:8000/api/tasks/search \
      -X POST \
@@ -224,7 +225,7 @@ make lint            # Check code style
 
 Ensure code quality and functionality with our comprehensive test suite:
 
-```bash
+```
 # Run all tests
 make test
 
@@ -240,7 +241,7 @@ make test
 Maintain high code standards with automated tools:
 
 ### Static Analysis
-```bash
+```
 # Run PHPStan analysis
 make stan
 
@@ -249,7 +250,7 @@ make stan
 ```
 
 ### Code Style
-```bash
+```
 # Check code style
 make lint
 
@@ -266,6 +267,7 @@ Explore our comprehensive documentation:
 
 - **OpenAPI 3.1 Specification**: [`docs/openapi.yaml`](docs/openapi.yaml)
 - **Postman Collection**: [`docs/postman_collection.json`](docs/postman_collection.json)
+- **Postman Collection Guide**: [`docs/POSTMAN.md`](docs/POSTMAN.md)
 - **Entity Relationship Diagram**: [`docs/erd.md`](docs/erd.md)
 
 ## ⚙️ Environment Variables
