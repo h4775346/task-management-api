@@ -1,223 +1,322 @@
-# Task Management API
+<div align="center">
+  <img src="https://laravel.com/img/logomark.min.svg" alt="Laravel Logo" width="100">
+  <h1>Task Management API</h1>
+  <p>🚀 A Modern REST API for Task Management with JWT Authentication & RBAC</p>
+  
+  [![Laravel](https://img.shields.io/badge/Laravel-11.x-red?style=for-the-badge&logo=laravel)](https://laravel.com)
+  [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php)](https://www.php.net)
+  [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com)
+</div>
 
-A REST API for task management with JWT authentication, RBAC, task dependencies with cycle detection, and caching.
+## 🌟 Overview
 
-## Features
+Welcome to the **Task Management API** - a robust, scalable, and beautifully designed RESTful API built with Laravel 11. This API provides comprehensive task management capabilities with enterprise-grade features including JWT authentication, Role-Based Access Control (RBAC), task dependencies with cycle detection, and intelligent caching.
 
-- **Authentication**: JWT-based authentication using `tymon/jwt-auth`
-- **Authorization**: Role-Based Access Control using `spatie/laravel-permission`
-- **Task Management**: Create, read, update, delete tasks with soft deletes
-- **Task Dependencies**: Add dependencies between tasks with cycle detection
-- **Search & Filtering**: Advanced search with caching
-- **Docker**: Production-ready Docker setup with nginx, PHP-FPM, and MySQL
-- **Testing**: Comprehensive test suite using PestPHP
-- **Documentation**: OpenAPI 3.1 specification, Postman collection, and ERD
+Whether you're building a project management application, workflow automation system, or issue tracking platform, this API provides the foundation you need to get started quickly.
 
-## Requirements
+## 🚀 Key Features
 
-- PHP 8.2+
-- Composer
-- Docker & Docker Compose
-- Node.js (for frontend assets)
+| Feature | Description |
+|--------|-------------|
+| 🔐 **JWT Authentication** | Secure token-based authentication using `tymon/jwt-auth` |
+| 👥 **Role-Based Access Control** | Fine-grained permissions with `spatie/laravel-permission` |
+| 📋 **Task Management** | Full CRUD operations with soft deletes |
+| 🔗 **Task Dependencies** | Create dependencies between tasks with automatic cycle detection |
+| 🔍 **Advanced Search** | Powerful filtering and search capabilities with caching |
+| 🐳 **Docker Support** | Production-ready containerized environment |
+| 🧪 **Comprehensive Testing** | Full test coverage with PestPHP |
+| 📖 **Rich Documentation** | OpenAPI 3.1, Postman Collection, and ERD |
 
-## Tech Stack
+## 🛠️ Technology Stack
 
 - **Framework**: Laravel 11
 - **Authentication**: tymon/jwt-auth
 - **RBAC**: spatie/laravel-permission
 - **Database**: MySQL 8.x
-- **Caching**: Laravel FILE cache (no Redis)
+- **Caching**: Laravel FILE cache
 - **Testing**: PestPHP
-- **QA**: Laravel Pint, Larastan
-- **Documentation**: OpenAPI 3.1, Postman
+- **Code Quality**: Laravel Pint, Larastan
 
-## Quick Start
+## 📋 Requirements
 
-1. **Start the Docker environment**:
+### For Docker Development (Recommended)
+- Docker & Docker Compose
+- Git
+
+### For Local Development
+- PHP 8.2+
+- Composer
+- MySQL 8.x or SQLite
+- Node.js (for frontend assets)
+- Git
+
+## 📦 Installation
+
+### 🐳 Docker Setup (Recommended)
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/h4775346/task-management-api.git
+   cd task-management-api
+   ```
+
+2. **Start the Docker Environment**
    ```bash
    make up
    ```
 
-2. **Run migrations and seeders**:
+3. **Run Migrations and Seeders**
    ```bash
    make migrate-seed
    ```
 
-3. **Login with demo credentials**:
+4. **Access the Application**
+   - API: `http://localhost:8000/api`
+   - Database: `localhost:3306` (MySQL)
+
+### 💻 Local Development Setup
+
+1. **Clone the Repository**
    ```bash
-   # Manager account
-   email: manager@example.com
-   password: password
+   git clone https://github.com/h4775346/task-management-api.git
+   cd task-management-api
+   ```
+
+2. **Install PHP Dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Install JavaScript Dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Configure Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
    
-   # User accounts
-   email: user1@example.com
-   password: password
+   Update your `.env` file with your database credentials:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=tasks
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
+5. **Run Migrations and Seeders**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. **Start the Development Server**
+   ```bash
+   php artisan serve
+   ```
    
-   email: user2@example.com
-   password: password
-   ```
+   The API will be available at `http://localhost:8000/api`
 
-4. **Generate a JWT token for testing**:
-   ```bash
-   php artisan auth:demo-token manager@example.com
-   ```
+## 🎯 Quick Start Guide
 
-5. **Test the API**:
-   ```bash
-   curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
-        http://localhost:8000/api/tasks/search \
-        -X POST \
-        -d '{"status":"pending","page":1,"per_page":10}' \
-        -H "Content-Type: application/json"
-   ```
+### 1. **Login with Demo Credentials**
 
-## Docker Setup
+We provide pre-seeded demo accounts for testing:
 
-The project includes a complete Docker environment with:
+**Manager Account** (Full permissions):
+```
+Email: manager@example.com
+Password: password
+```
 
-- **app**: PHP 8.2 FPM container
-- **web**: Nginx web server
-- **db**: MySQL 8.x database
+**User Accounts** (Limited permissions):
+```
+Email: user1@example.com
+Password: password
 
-### Make Commands
+Email: user2@example.com
+Password: password
+```
 
-- `make up` - Start all services
-- `make down` - Stop all services
-- `make logs` - View container logs
-- `make migrate-seed` - Run migrations and seeders
-- `make test` - Run test suite
-- `make stan` - Run static analysis
-- `make lint` - Check code style
+### 2. **Generate a JWT Token**
 
-## API Endpoints
+```bash
+php artisan auth:demo-token manager@example.com
+```
 
-### Authentication
+### 3. **Test the API**
 
-- `POST /api/auth/login` - Login and get JWT token
-- `POST /api/auth/refresh` - Refresh JWT token
-- `POST /api/auth/logout` - Logout and invalidate token
-- `GET /api/auth/me` - Get current user info
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+     http://localhost:8000/api/tasks/search \
+     -X POST \
+     -d '{"status":"pending","page":1,"per_page":10}' \
+     -H "Content-Type: application/json"
+```
 
-### Tasks
+## 📡 API Endpoints
 
-- `POST /api/tasks` - Create a new task (manager only)
-- `GET /api/tasks/{id}` - Get a specific task
-- `PUT /api/tasks/{id}` - Update a task (manager only)
-- `PATCH /api/tasks/{id}/status` - Update task status (assignee or manager)
-- `DELETE /api/tasks/{id}` - Delete a task (manager only)
+### 🔐 Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/login` | Login and get JWT token |
+| `POST` | `/api/auth/refresh` | Refresh JWT token |
+| `POST` | `/api/auth/logout` | Logout and invalidate token |
+| `GET` | `/api/auth/me` | Get current user info |
 
-### Task Dependencies
+### 📋 Tasks
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/tasks` | Create a new task (manager only) |
+| `GET` | `/api/tasks/{id}` | Get a specific task |
+| `PUT` | `/api/tasks/{id}` | Update a task (manager only) |
+| `PATCH` | `/api/tasks/{id}/status` | Update task status (assignee or manager) |
+| `DELETE` | `/api/tasks/{id}` | Delete a task (manager only) |
 
-- `GET /api/tasks/{id}/dependencies` - Get task dependencies
-- `POST /api/tasks/{id}/dependencies` - Add a dependency (manager only)
-- `DELETE /api/tasks/{id}/dependencies/{dependsOnId}` - Remove a dependency (manager only)
+### 🔗 Task Dependencies
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/tasks/{id}/dependencies` | Get task dependencies |
+| `POST` | `/api/tasks/{id}/dependencies` | Add a dependency (manager only) |
+| `DELETE` | `/api/tasks/{id}/dependencies/{dependsOnId}` | Remove a dependency (manager only) |
 
-### Task Search
+### 🔍 Task Search
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/tasks/search` | Search and filter tasks with pagination |
 
-- `POST /api/tasks/search` - Search and filter tasks with pagination
-
-## Roles & Permissions
+## 👥 Roles & Permissions
 
 ### Manager Role
-
-- Can create, update, and delete tasks
-- Can assign tasks to users
-- Can view all tasks
-- Can update status of any task
+Managers have full control over the task management system:
+- ✅ Create, update, and delete tasks
+- ✅ Assign tasks to any user
+- ✅ View all tasks in the system
+- ✅ Update status of any task
+- ✅ Manage task dependencies
 
 ### User Role
+Regular users have limited permissions focused on their assigned tasks:
+- ✅ View only tasks assigned to them
+- ✅ Update status of their assigned tasks
+- ❌ Cannot create or delete tasks
+- ❌ Cannot manage task dependencies
 
-- Can view only assigned tasks
-- Can update status of assigned tasks only
+## ⚡ Make Commands (Docker)
 
-## Caching
-
-The task search endpoint uses Laravel FILE cache with versioned keys. Cache is automatically invalidated when:
-
-- Tasks are created, updated, or deleted
-- Task dependencies are added or removed
-
-**Note**: FILE cache is safe for single-container deployments. For multi-instance deployments, use Redis or disable caching.
-
-## Testing
-
-Run the test suite with:
+Streamline your development workflow with these helpful commands:
 
 ```bash
+make up              # Start all services
+make down            # Stop all services
+make logs            # View container logs
+make migrate-seed    # Run migrations and seeders
+make test            # Run test suite
+make stan            # Run static analysis
+make lint            # Check code style
+```
+
+## 🧪 Testing
+
+Ensure code quality and functionality with our comprehensive test suite:
+
+```bash
+# Run all tests
 make test
-```
 
-Or directly:
-
-```bash
+# Or directly
 ./vendor/bin/pest
+
+# Run specific test
+./vendor/bin/pest tests/Feature/TaskTest.php
 ```
 
-## Code Quality
+## 🔍 Code Quality
+
+Maintain high code standards with automated tools:
 
 ### Static Analysis
-
-Run PHPStan for static analysis:
-
 ```bash
+# Run PHPStan analysis
 make stan
-```
 
-Or directly:
-
-```bash
+# Or directly
 ./vendor/bin/phpstan analyse
 ```
 
 ### Code Style
-
-Check code style with Laravel Pint:
-
 ```bash
+# Check code style
 make lint
-```
 
-Or directly:
-
-```bash
+# Or directly
 ./vendor/bin/pint --test
-```
 
-Fix code style issues:
-
-```bash
+# Auto-fix code style issues
 ./vendor/bin/pint
 ```
 
-## Documentation
+## 📚 Documentation
 
-- **OpenAPI 3.1**: See `docs/openapi.yaml`
-- **Postman Collection**: See `docs/postman_collection.json`
-- **ERD**: See `docs/erd.md`
+Explore our comprehensive documentation:
 
-## Environment Variables
+- **OpenAPI 3.1 Specification**: [`docs/openapi.yaml`](docs/openapi.yaml)
+- **Postman Collection**: [`docs/postman_collection.json`](docs/postman_collection.json)
+- **Entity Relationship Diagram**: [`docs/erd.md`](docs/erd.md)
 
-Key environment variables (see `.env.example` for full list):
+## ⚙️ Environment Variables
 
-- `DB_CONNECTION` - Database connection (mysql)
-- `DB_HOST` - Database host (db)
-- `DB_PORT` - Database port (3306)
-- `DB_DATABASE` - Database name (tasks)
-- `DB_USERNAME` - Database user (tasks)
-- `DB_PASSWORD` - Database password (tasks)
-- `CACHE_DRIVER` - Cache driver (file)
-- `JWT_TTL` - JWT token TTL in seconds (900 = 15 minutes)
-- `JWT_REFRESH_TTL` - JWT refresh token TTL in minutes (43200 = 30 days)
-- `TASKS_SEARCH_CACHE_TTL` - Task search cache TTL in seconds (60)
+Key configuration options (see `.env.example` for full list):
 
-## Deployment Considerations
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DB_CONNECTION` | Database connection driver | mysql |
+| `DB_HOST` | Database host | db |
+| `DB_PORT` | Database port | 3306 |
+| `DB_DATABASE` | Database name | tasks |
+| `DB_USERNAME` | Database user | tasks |
+| `DB_PASSWORD` | Database password | tasks |
+| `CACHE_DRIVER` | Cache driver | file |
+| `JWT_TTL` | JWT token TTL (seconds) | 900 (15 min) |
+| `JWT_REFRESH_TTL` | Refresh token TTL (minutes) | 43200 (30 days) |
+| `TASKS_SEARCH_CACHE_TTL` | Search cache TTL (seconds) | 60 |
 
-1. **Caching**: For multi-instance deployments, replace FILE cache with Redis
-2. **Database**: Use a production-ready MySQL instance
+## ☁️ Deployment Considerations
+
+For production deployments, consider these recommendations:
+
+1. **Caching**: Replace FILE cache with Redis for multi-instance deployments
+2. **Database**: Use a production-ready MySQL instance with proper backups
 3. **Security**: Never commit `.env` files to version control
 4. **Performance**: Enable PHP opcache and nginx gzip compression
 5. **Scaling**: Use a load balancer for multiple app instances
+6. **Monitoring**: Implement application monitoring and logging
 
-## License
+## 🤝 Contributing
 
-MIT License. See [LICENSE](LICENSE) file for details.
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🌐 Repository
+
+**GitHub**: [https://github.com/h4775346/task-management-api.git](https://github.com/h4775346/task-management-api.git)
+
+---
+
+<div align="center">
+  <p>Built with ❤️ using Laravel</p>
+  <p>⭐ Don't forget to star this repository if you find it useful!</p>
+</div>
