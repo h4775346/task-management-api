@@ -274,7 +274,7 @@ Explore our comprehensive documentation:
 
 For a visual representation of the database structure, see our [Entity Relationship Diagram](docs/erd.md) or view it directly below:
 
-```
+```mermaid
 erDiagram
     USERS {
         int id PK
