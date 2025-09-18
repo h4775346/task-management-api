@@ -15,6 +15,34 @@ Welcome to the **Task Management API** - a robust, scalable, and beautifully des
 
 Whether you're building a project management application, workflow automation system, or issue tracking platform, this API provides the foundation you need to get started quickly.
 
+## 📚 Table of Contents
+
+- [Key Features](#-key-features)
+- [Technology Stack](#-technology-stack)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
+  - [Local Development Setup](#-local-development-setup)
+  - [Docker Setup (Recommended)](#-docker-setup-recommended)
+- [Quick Start Guide](#-quick-start-guide)
+- [API Endpoints](#-api-endpoints)
+  - [Authentication](#-authentication)
+  - [Tasks](#-tasks)
+  - [Task Dependencies](#-task-dependencies)
+  - [Task Search](#-task-search)
+- [Roles & Permissions](#-roles--permissions)
+  - [Manager Role](#manager-role)
+  - [User Role](#user-role)
+- [Make Commands (Docker)](#-make-commands-docker)
+- [Testing](#-testing)
+- [Code Quality](#-code-quality)
+- [Documentation](#-documentation)
+- [Database Schema Visualization](#-database-schema-visualization)
+- [Environment Variables](#-environment-variables)
+- [Deployment Considerations](#-deployment-considerations)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Repository](#-repository)
+
 ## 🚀 Key Features
 
 | Feature | Description |
@@ -353,8 +381,8 @@ erDiagram
 
     TASKS ||--o{ TASK_DEPENDENCIES : "task_dependencies"
     TASKS ||--o{ TASK_DEPENDENCIES : "dependent_tasks"
-
 ```
+
 
 
 ## ⚙️ Environment Variables
