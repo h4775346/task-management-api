@@ -14,7 +14,7 @@ This Entity Relationship Diagram (ERD) provides a visual representation of the d
 
 ## 📊 Database Schema
 
-```
+```mermaid
 erDiagram
     %% Entity Definitions with Enhanced Styling %%
     
@@ -77,8 +77,8 @@ erDiagram
     }
     
     TASK_DEPENDENCIES {
-        int task_id PK "Dependent task"
-        int depends_on_task_id PK "Dependency task"
+        int task_id PK FK "Dependent task"
+        int depends_on_task_id PK FK "Dependency task"
     }
     
     %% Enhanced Relationships with Descriptive Labels %%
@@ -96,10 +96,7 @@ erDiagram
     
     TASKS ||--o{ TASK_DEPENDENCIES : "task_dependencies"
     TASKS ||--o{ TASK_DEPENDENCIES : "dependent_tasks"
-}
-
 ```
-
 
 ## 🎨 Design Elements
 
