@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://mermaid.js.org/favicon.svg" alt="Mermaid Logo" width="100">
+  <img src="https://mermaid.js.org/images/mermaid-logo.svg" alt="Mermaid Logo" width="100">
   <h1>Entity Relationship Diagram</h1>
   <p>📘 Database Schema Visualization for Task Management API</p>
   
@@ -20,7 +20,7 @@ This Entity Relationship Diagram (ERD) provides a visual representation of the d
 
 ## 📊 Database Schema
 
-```
+```mermaid
 erDiagram
     USERS {
         int id PK
@@ -99,4 +99,3 @@ erDiagram
 
     TASKS ||--o{ TASK_DEPENDENCIES : "task_dependencies"
     TASKS ||--o{ TASK_DEPENDENCIES : "dependent_tasks"
-}
