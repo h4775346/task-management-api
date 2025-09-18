@@ -20,7 +20,7 @@ This Entity Relationship Diagram (ERD) provides a visual representation of the d
 
 ## 📊 Database Schema
 
-```mermaid
+```
 erDiagram
     USERS {
         int id PK
