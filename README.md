@@ -270,6 +270,93 @@ Explore our comprehensive documentation:
 - **Postman Collection Guide**: [`docs/POSTMAN.md`](docs/POSTMAN.md)
 - **Entity Relationship Diagram**: [`docs/erd.md`](docs/erd.md)
 
+### 📊 Database Schema Visualization
+
+For a visual representation of the database structure, see our [Entity Relationship Diagram](docs/erd.md) or view it directly below:
+
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        varchar name
+        varchar email
+        varchar password
+        datetime email_verified_at
+        varchar remember_token
+        datetime created_at
+        datetime updated_at
+    }
+
+    ROLES {
+        int id PK
+        varchar name
+        varchar guard_name
+        datetime created_at
+        datetime updated_at
+    }
+
+    PERMISSIONS {
+        int id PK
+        varchar name
+        varchar guard_name
+        datetime created_at
+        datetime updated_at
+    }
+
+    MODEL_HAS_ROLES {
+        int role_id
+        int model_id
+        varchar model_type
+    }
+
+    MODEL_HAS_PERMISSIONS {
+        int permission_id
+        int model_id
+        varchar model_type
+    }
+
+    ROLE_HAS_PERMISSIONS {
+        int permission_id
+        int role_id
+    }
+
+    TASKS {
+        int id PK
+        varchar title
+        text description
+        varchar status
+        date due_date
+        int assignee_id
+        int created_by
+        int updated_by
+        datetime created_at
+        datetime updated_at
+        datetime deleted_at
+    }
+
+    TASK_DEPENDENCIES {
+        int task_id
+        int depends_on_task_id
+    }
+
+    %% Relationships
+    USERS ||--o{ TASKS : "assigned_tasks"
+    USERS ||--o{ TASKS : "created_tasks"
+    USERS ||--o{ TASKS : "updated_tasks"
+    USERS ||--o{ MODEL_HAS_ROLES : "user_roles"
+    USERS ||--o{ MODEL_HAS_PERMISSIONS : "user_permissions"
+
+    ROLES ||--o{ MODEL_HAS_ROLES : "role_assignments"
+    PERMISSIONS ||--o{ MODEL_HAS_PERMISSIONS : "permission_assignments"
+    ROLES ||--o{ ROLE_HAS_PERMISSIONS : "role_permissions"
+    PERMISSIONS ||--o{ ROLE_HAS_PERMISSIONS : "granted_permissions"
+
+    TASKS ||--o{ TASK_DEPENDENCIES : "task_dependencies"
+    TASKS ||--o{ TASK_DEPENDENCIES : "dependent_tasks"
+}
+```
+
+
 ## ⚙️ Environment Variables
 
 Key configuration options (see `.env.example` for full list):
